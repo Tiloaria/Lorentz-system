@@ -57,12 +57,13 @@ struct draw
         rotate(_rotate)
     {}
     
-    void add
+    draw & add
     (
         std::vector <Point> const & values
     )
     {   
         valuess.push_back(values);
+        return *this;
     }
     
     ~draw ()
