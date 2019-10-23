@@ -81,8 +81,9 @@ struct draw
         make_plot plot_zt(names[2], {min_value.t, max_value.t}, {min_value.z, max_value.z}, "t", "z");
         make_plot_3d plot_xyz(names[3], {{min_value.x, max_value.x}, {min_value.y, max_value.y}, {min_value.z, max_value.z}}, rotate);
 
-        for (std::vector <Point> const & values : valuess)
+        for (size_t i = 0; i != valuess.size(); ++i)
         {
+            std::vector <Point> const & values = valuess[i];
             std::vector <double> x;
             std::vector <double> y;
             std::vector <double> z;
@@ -96,10 +97,10 @@ struct draw
                 t.push_back(a.t);
             }
 
-            plot_xt.add(t, x);
-            plot_yt.add(t, y);
-            plot_zt.add(t, z);
-            plot_xyz.add(x, y, z);
+            plot_xt.add(t, x, plots_color[i % plots_color.size()]);
+            plot_yt.add(t, y, plots_color[i % plots_color.size()]);
+            plot_zt.add(t, z, plots_color[i % plots_color.size()]);
+            plot_xyz.add(x, y, z, plots_color[i % plots_color.size()]);
         }
     }
     
@@ -107,8 +108,11 @@ private:
     Point min_value;
     Point max_value;
     std::vector <std::vector <Point> > valuess;
-    std::vector <std::string> const & names = {"x(t)", "y(t)", "z(t)", "xyz"};
+    std::vector <std::string> names = {"x(t)", "y(t)", "z(t)", "xyz"};
     std::pair <double, double> rotate = {120, 60};
+    static std::vector <std::string> plots_color;
 };
+
+std::vector <std::string> draw::plots_color = {"b", "g", "r", "E", "c", "m", "q", "p", "k"};
 
 #endif
