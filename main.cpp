@@ -1,5 +1,16 @@
 #include <iostream>
 #include <vector>
+#include <mgl2/mgl.h>
+#include <string>
+#include <math.h>
+
+#define y0 double_y0
+
+using std::vector;
+using std::string;
+using std::min;
+using std::max;
+using std::cout;
 
 struct Point {
     long double x, y, z, t;
@@ -11,15 +22,15 @@ struct Point {
     }
 };
 
-const long double delta = 0,
-b = 0,
-r = 0,
-delta_t = 0,
+const long double delta = 10,
+b = 10/3,
+r = 20,
+delta_t = 0.001,
 x0 = 0,
 y0 = 0,
-z0 = 0,
+z0 = r + 5,
 t0 = 0,
-max_t = 0;
+max_t = 20;
 
 std::vector<Point> explicit_method_euler () {
     Point a(x0, y0, z0, t0);
@@ -54,7 +65,63 @@ std::vector<Point> implicit_method_euler () {
     return ps;
 }
 
+const int num_of_dots = 100;
+int scale_to_int(long double max_val, long double min_val, long double x) {
+    long double step = (max_val - min_val) / num_of_dots;
+    cout << round((x - min_val) / step) << " - rounded\n";
+    return round((x - min_val) / step);
+
+}
+
+void visualisation(const vector<Point> & points, string name) {
+    cout << "size " << points.size() << "\n";
+    mglGraph gr;
+    long double max_val = -100000.0, min_val = -100000.0;
+    long double max_val_x = max_val, min_val_x = min_val;
+    long double max_val_y = max_val, min_val_y = min_val;
+    long double max_val_z = max_val, min_val_z = min_val;
+    for (Point p: points) {
+        max_val = max(max_val, p.t);
+        min_val = min(min_val, p.t);
+        max_val_x = max(max_val_x, p.x);
+        min_val_x = min(min_val_x, p.x);
+        max_val_y = max(max_val_y, p.y);
+        min_val_y = min(min_val_y, p.y);
+        max_val_z = max(max_val_z, p.z);
+        min_val_z = min(min_val_z, p.z);
+    }
+    const long double Eps = (max_val - min_val) / 10;
+    max_val += Eps;
+    min_val -= Eps;
+    cout << "min_val " << min_val << " max_val = " << max_val << "\n";
+    mglData dat_x(scale_to_int(max_val, min_val, min_val), scale_to_int(max_val, min_val, min_val));
+    mglData dat_y(scale_to_int(max_val, min_val, min_val), scale_to_int(max_val, min_val, min_val));
+    mglData dat_z(scale_to_int(max_val, min_val, min_val), scale_to_int(max_val, min_val, min_val));
+    for (Point p: points) {
+        dat_x.a[scale_to_int(max_val, min_val, p.t)] = scale_to_int(max_val_x, min_val_x, p.x);
+        dat_y.a[scale_to_int(max_val, min_val, p.t)] = scale_to_int(max_val_y, min_val_y, p.y);
+        dat_z.a[scale_to_int(max_val, min_val, p.t)] = scale_to_int(max_val_z, min_val_z, p.z);
+    }
+    gr.Light(true);
+    gr.Surf(dat_x);
+    gr.Cont(dat_x, "b");
+    gr.Axis();
+    gr.WriteFrame((name + "_x" + ".png").c_str());
+    gr.Light(true);
+    gr.Surf(dat_y);
+    gr.Cont(dat_y, "b");
+    gr.Axis();
+    gr.WriteFrame((name + "_y" + ".png").c_str());
+    gr.Light(true);
+    gr.Surf(dat_z);
+    gr.Cont(dat_z, "b");
+    gr.Axis();
+    gr.WriteFrame((name + "_z" + ".png").c_str());
+}
+
 int main() {
     std::cout << "Hello, World!" << std::endl;
+    visualisation(implicit_method_euler(), "Implicit Euler");
+    visualisation(explicit_method_euler(), "Explicit Euler");
     return 0;
 }
