@@ -44,7 +44,7 @@ bool R_1 (std::vector <Point> const & values, size_t last_n, double eps, double,
 
 bool R_2 (std::vector <Point> const & values, size_t last_n, double eps, double b, double r)
 {
-    double sbr1 =  std::sqrt(b * (r - 1.));
+    double sbr1 =  std::sqrt(std::fabs(b * (r - 1.)));
     Point etalon_0 = {0., 0., 0., 0.};
     Point etalon_1 = { sbr1,  sbr1, r - 1., 0.};
     Point etalon_2 = {-sbr1, -sbr1, r - 1., 0.};
