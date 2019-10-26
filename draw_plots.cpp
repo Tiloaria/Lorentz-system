@@ -49,13 +49,19 @@ struct draw
         std::vector <std::string> const & _names = {"x(t)", "y(t)", "z(t)", "xyz"},
         std::pair <double, double> _rotate = {120, 60},
         Point const & _min_value = {0., 0., 0., 0.},
-        Point const & _max_value = {0., 0., 0., 0.}
+        Point const & _max_value = {0., 0., 0., 0.},
+        bool _draw_legend = 1,
+        double _legend_x = -0.5,
+        double _legend_y = 1.6
     ) :
         min_value(_min_value),
         max_value(_max_value),
         valuess(),
         names(_names),
-        rotate(_rotate)
+        rotate(_rotate),
+        draw_legend(_draw_legend),
+        legend_x(_legend_x),
+        legend_y(_legend_y)
     {}
     
     draw & add
@@ -80,10 +86,10 @@ struct draw
             max_value = get_max_component(max_value, cur_min_max.second);
         }
 
-        make_plot plot_xt(names[0], {min_value.t, max_value.t}, {min_value.x, max_value.x}, "t", "x");
-        make_plot plot_yt(names[1], {min_value.t, max_value.t}, {min_value.y, max_value.y}, "t", "y");
-        make_plot plot_zt(names[2], {min_value.t, max_value.t}, {min_value.z, max_value.z}, "t", "z");
-        make_plot_3d plot_xyz(names[3], {{min_value.x, max_value.x}, {min_value.y, max_value.y}, {min_value.z, max_value.z}}, rotate);
+        make_plot plot_xt(names[0], {min_value.t, max_value.t}, {min_value.x, max_value.x}, "t", "x", draw_legend, legend_x, legend_y);
+        make_plot plot_yt(names[1], {min_value.t, max_value.t}, {min_value.y, max_value.y}, "t", "y", draw_legend, legend_x, legend_y);
+        make_plot plot_zt(names[2], {min_value.t, max_value.t}, {min_value.z, max_value.z}, "t", "z", draw_legend, legend_x, legend_y);
+        make_plot_3d plot_xyz(names[3], {{min_value.x, max_value.x}, {min_value.y, max_value.y}, {min_value.z, max_value.z}}, rotate, {"X", "Y", "Z"}, draw_legend, legend_x, legend_y);
 
         for (size_t i = 0; i != valuess.size(); ++i)
         {
@@ -116,6 +122,9 @@ private:
     std::vector <std::string> names = {"x(t)", "y(t)", "z(t)", "xyz"};
     std::pair <double, double> rotate = {120, 60};
     static std::vector <std::string> plots_color;
+    bool draw_legend;
+    double legend_x;
+    double legend_y;
 };
 
 std::vector <std::string> draw::plots_color = {"b", "g", "r", "E", "c", "m", "q", "p", "k"};

@@ -7,8 +7,8 @@ int main ()
     b = 10.0 / 3,
     r = 20,
     delta_t = 0.01,
-    x0 = 0,
-    y0 = 0,
+    x0 = 10,
+    y0 = 12,
     z0 = r + 5,
     t0 = 0,
     max_t = 2;
@@ -49,6 +49,7 @@ int main ()
         "implicit\\_method\\_euler"
     );
     
+    /*
     all_plots.add
     (
         runge_kutta
@@ -65,6 +66,7 @@ int main ()
         ),
         "runge\\_kutta"
     );
+    */
     
     all_plots.add
     (
