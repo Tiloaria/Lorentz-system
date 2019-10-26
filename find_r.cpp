@@ -48,16 +48,24 @@ bool R_2 (std::vector <Point> const & values, size_t last_n, double eps, double 
     Point etalon_0 = {0., 0., 0., 0.};
     Point etalon_1 = { sbr1,  sbr1, r - 1., 0.};
     Point etalon_2 = {-sbr1, -sbr1, r - 1., 0.};
+
+    bool answer_1 = 1, answer_2 = 1, answer_0 = 1;
     for (size_t i = values.size() - std::min(last_n, values.size()); i < values.size(); ++i)
     {
-        if (!near(values[i], etalon_1, eps) && 
-            !near(values[i], etalon_2, eps) && 
-            !near(values[i], etalon_0, eps))
+        if (!near(values[i], etalon_1, eps))
         {
-            return 0;
+            answer_1 = 0;
+        }
+        if (!near(values[i], etalon_2, eps))
+        {
+            answer_2 = 0;
+        }
+        if (!near(values[i], etalon_0, eps))
+        {
+            answer_0 = 0;
         }
     }
-    return 1;
+    return answer_0 || answer_1 || answer_2;
 }
 
 
@@ -118,6 +126,52 @@ private:
     double b;
 };
 
+template <typename F, typename ... T>
+double find_r 
+(
+    F method, //std::vector <Point> (r, b, args ...)
+    
+    std::function 
+    <
+        bool
+        (
+            std::vector <Point> const & values, 
+            size_t last_n, 
+            double eps, 
+            double b, 
+            double r
+        )
+    > r_spec_comp,
+    
+    double left_r,
+    double right_r,
+    size_t last_n,
+    double eps,
+    double b,
+    T && ... args
+)
+{
+    return bin_search
+    (
+        left_r, 
+        right_r, 
+        eps, 
+        std::function
+        <
+            bool (double r)
+        >
+        (
+            comparator
+            (
+                std::bind(method, std::placeholders::_1, b, std::ref(args) ...), 
+                r_spec_comp, 
+                last_n, 
+                eps, 
+                b
+            )
+        )
+    );
+}
 
 
 #endif
