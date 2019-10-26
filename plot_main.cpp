@@ -29,7 +29,7 @@ int main ()
             t0,
             max_t
         ),
-        "explicit_method_euler"
+        "explicit\\_method\\_euler"
     );
 
     all_plots.add
@@ -46,7 +46,7 @@ int main ()
             t0,
             max_t
         ),
-        "implicit_method_euler"
+        "implicit\\_method\\_euler"
     );
     
     all_plots.add
@@ -63,7 +63,7 @@ int main ()
             t0,
             max_t
         ),
-        "runge_kutta"
+        "runge\\_kutta"
     );
     
     all_plots.add
