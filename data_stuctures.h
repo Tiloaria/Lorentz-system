@@ -76,8 +76,8 @@ Point operator * (double lhs, Point const & rhs)
 vec3 f(long double t, vec3 const& p, double delta, double r, double b) {
         return {
                 delta * (p.y - p.x),
-                -p.x * p.z + r * p.x + p.y,
-                -p.x * p.y - b * p.z
+                -p.x * p.z + r * p.x - p.y,
+                +p.x * p.y - b * p.z
         };
 }
 

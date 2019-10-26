@@ -49,7 +49,6 @@ int main ()
         "implicit\\_method\\_euler"
     );
     
-    /*
     all_plots.add
     (
         runge_kutta
@@ -66,7 +65,6 @@ int main ()
         ),
         "runge\\_kutta"
     );
-    */
     
     all_plots.add
     (
