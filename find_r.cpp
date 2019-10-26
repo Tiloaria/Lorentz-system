@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <type_traits>
 #include <functional>
+#include "data_stuctures.h"
 
 template <typename ... T>
 double bin_search (double left, double right, double eps, std::function <bool (double, T ...)> comparator, T && ... args) // comparator : 1 1 1 1 0 0 0 0
@@ -146,7 +147,8 @@ double find_r
     double left_r,
     double right_r,
     size_t last_n,
-    double eps,
+    double eps_near,
+    double eps_search,
     double b,
     T && ... args
 )
@@ -155,7 +157,7 @@ double find_r
     (
         left_r, 
         right_r, 
-        eps, 
+        eps_search, 
         std::function
         <
             bool (double r)
@@ -166,7 +168,7 @@ double find_r
                 std::bind(method, std::placeholders::_1, b, std::ref(args) ...), 
                 r_spec_comp, 
                 last_n, 
-                eps, 
+                eps_near, 
                 b
             )
         )

@@ -94,7 +94,7 @@ struct make_plot_3d
         {
             for (size_t i = 0; i != legend.size(); ++i)
             {
-                gr.AddLegend(legend[i].first.c_str(), legend[i].second.c_str());
+                gr.AddLegend(legend[i].second.c_str(), legend[i].first.c_str());
             }
             gr.Legend(legend_x, legend_y);
         }

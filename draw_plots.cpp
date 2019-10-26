@@ -3,6 +3,7 @@
 
 #include "plots.cpp"
 #include "plots_3d.cpp"
+#include "data_stuctures.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -59,10 +60,12 @@ struct draw
     
     draw & add
     (
-        std::vector <Point> const & values
+        std::vector <Point> const & values,
+        std::string legend = ""
     )
     {   
         valuess.push_back(values);
+        legends.push_back(legend);
         return *this;
     }
     
@@ -98,10 +101,10 @@ struct draw
                 t.push_back(a.t);
             }
 
-            plot_xt.add(t, x, plots_color[i % plots_color.size()]);
-            plot_yt.add(t, y, plots_color[i % plots_color.size()]);
-            plot_zt.add(t, z, plots_color[i % plots_color.size()]);
-            plot_xyz.add(x, y, z, plots_color[i % plots_color.size()]);
+            plot_xt.add(t, x, plots_color[i % plots_color.size()], legends[i]);
+            plot_yt.add(t, y, plots_color[i % plots_color.size()], legends[i]);
+            plot_zt.add(t, z, plots_color[i % plots_color.size()], legends[i]);
+            plot_xyz.add(x, y, z, plots_color[i % plots_color.size()], legends[i]);
         }
     }
     
@@ -109,6 +112,7 @@ private:
     Point min_value;
     Point max_value;
     std::vector <std::vector <Point> > valuess;
+    std::vector <std::string> legends;
     std::vector <std::string> names = {"x(t)", "y(t)", "z(t)", "xyz"};
     std::pair <double, double> rotate = {120, 60};
     static std::vector <std::string> plots_color;
