@@ -25,6 +25,10 @@ struct vec3 {
                 return {x + rhs.x, y + rhs.y, z + rhs.z};
         }
 
+        vec3 operator-(vec3 const& rhs) const {
+            return{ x - rhs.x, y - rhs.y, z - rhs.z };
+        }
+
         vec3 operator/(long double k) const {
                 return {x / k, y / k, z / k};
         }
@@ -65,11 +69,11 @@ z0 = r + 5,
 t0 = 0,
 max_t = 2;
 
-std::vector<Point> explicit_method_euler () {
+std::vector<Point> explicit_method_euler (const long double local_max_t) {
     Point a(x0, y0, z0, t0);
     std::vector<Point> ps;
     ps.push_back(a);
-    while (a.t < max_t) {
+    while (a.t < local_max_t) {
         long double new_x = a.x + delta_t * delta * (a.y - a.x),
                 new_y = a.y + delta_t * (-a.x * a.z + r * a.x - a.y),
                 new_z = a.z + delta_t * (a.x * a.y - b * a.z),
@@ -81,6 +85,7 @@ std::vector<Point> explicit_method_euler () {
 }
 
 vec3 f(long double t, vec3 const& p) {
+    // basically t doesn't mean anything
         return {
                 delta * (p.y - p.x),
                 -p.x * p.z + r * p.x + p.y,
@@ -103,6 +108,25 @@ std::vector<Point> runge_kutta() {
                 ps.push_back(a);
         }
         return ps;
+}
+
+std::vector<Point> adams() {
+    long double old_max_t = max_t;
+    std::vector<Point> ps = explicit_method_euler(delta_t*3);
+    Point last_v = ps[ps.size() - 1];
+    while (last_v.t < max_t) {
+        long double dt_div_24 = delta_t / 24;
+        vec3 last_k_1 = ps[ps.size() - 2].xyz();
+        vec3 last_k_2 = ps[ps.size() - 3].xyz();
+        vec3 last_k_3 = ps[ps.size() - 4].xyz();
+        vec3 v_tilda = last_v.xyz() + dt_div_24 * (55 * f(last_v.t, last_v.xyz()) - 59 * f(last_v.t - delta_t, last_k_1) 
+            + 37 * f(last_v.t - 2 * delta_t, last_k_2) - 9 * f(last_v.t - 3*delta_t, last_k_3));
+        vec3 v_new = last_v.xyz() + dt_div_24 * (9 * f(last_v.t + delta_t, v_tilda) + 19 * f(last_v.t, last_v.xyz())
+            - 5 * f(last_v.t - delta_t, last_k_1) + f(last_v.t - 2*delta_t, last_k_2));
+        last_v = Point(last_v.t + delta_t, v_new);
+        ps.push_back(last_v);
+    }
+    return ps;
 }
 
 std::vector<Point> implicit_method_euler () {
@@ -186,12 +210,14 @@ void print(std::vector<Point> const& ps) {
 int main() {
     std::cout << "Hello, World!" << std::endl;
     visualisation(implicit_method_euler(), "Implicit Euler");
-    visualisation(explicit_method_euler(), "Explicit Euler");
+    visualisation(explicit_method_euler(max_t), "Explicit Euler");
     std::cout << "explicit euler:" << std::endl;
-    print(explicit_method_euler());
+    print(explicit_method_euler(max_t));
     std::cout << "implicit euler:" << std::endl;
     print(implicit_method_euler());
     std::cout << "runge_kutta: " << std::endl;
     print(runge_kutta());
+    std::cout << "adams: " << std::endl;
+    print(adams());
     return 0;
 }
