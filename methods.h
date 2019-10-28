@@ -3,7 +3,7 @@
 
 #include "data_stuctures.h"
 
-std::vector<Point> explicit_method_euler 
+std::vector<Point> explicit_method_euler
 (
     double r = 20.,
     double b = 10. / 3.,
@@ -14,7 +14,7 @@ std::vector<Point> explicit_method_euler
     double z0 = 50.,
     double t0 = 0.,
     double max_t = 2.
-) 
+)
 {
     Point a(x0, y0, z0, t0);
     std::vector<Point> ps;
@@ -41,7 +41,7 @@ std::vector<Point> runge_kutta
     double z0 = 50.,
     double t0 = 0.,
     double max_t = 2.
-) 
+)
 {
         Point a(x0, y0, z0, t0);
         std::vector<Point> ps;
@@ -51,15 +51,15 @@ std::vector<Point> runge_kutta
                 vec3 k0 = f(a.t, a.xyz(), delta, r, b);
                 vec3 k1 = f(a.t + dt_div_2, a.xyz() + dt_div_2 * k0, delta, r, b);
                 vec3 k2 = f(a.t + dt_div_2, a.xyz() + dt_div_2 * k1, delta, r, b);
-                vec3 k3 = f(a.t + delta_t, delta_t * k2, delta, r, b);
-                vec3 k = (k0 + 2 * k1 + 2 * k2 + k3) / 5;
+                vec3 k3 = f(a.t + delta_t, a.xyz() + delta_t * k2, delta, r, b);
+                vec3 k = (k0 + 2 * k1 + 2 * k2 + k3) / 6;
                 a = Point(a.t + delta_t, a.xyz() + delta_t * k);
                 ps.push_back(a);
         }
         return ps;
 }
 
-std::vector<Point> implicit_method_euler 
+std::vector<Point> implicit_method_euler
 (
     double r = 20.,
     double b = 10. / 3.,
@@ -70,7 +70,7 @@ std::vector<Point> implicit_method_euler
     double z0 = 50.,
     double t0 = 0.,
     double max_t = 2.
-) 
+)
 {
     Point a(x0, y0, z0, t0);
     std::vector<Point> ps;
@@ -100,11 +100,11 @@ std::vector <Point> adams_4
     double z0 = 50.,
     double t0 = 0.,
     double max_t = 2.
-) 
+)
 {
     size_t correct_times = 2;
     std::vector <Point> answer = implicit_method_euler(r, b, delta, delta_t, x0, y0, z0, t0, t0 + 5. * delta_t);
-    auto f_ = [r, b, delta, delta_t] (Point value) -> Point 
+    auto f_ = [r, b, delta, delta_t] (Point value) -> Point
     {
         return Point
         (
@@ -114,13 +114,13 @@ std::vector <Point> adams_4
             delta_t
         );
     };
-    
+
     while (answer.back().t < max_t)
     {
         size_t i = answer.size();
-        Point predict = answer.back() + 
-            ( 55./24.) * f_(answer[i - 1]) + 
-            (-59./24.) * f_(answer[i - 2]) + 
+        Point predict = answer.back() +
+            ( 55./24.) * f_(answer[i - 1]) +
+            (-59./24.) * f_(answer[i - 2]) +
             ( 37./24.) * f_(answer[i - 3]) +
             ( -9./24.) * f_(answer[i - 4]);
 
@@ -128,10 +128,10 @@ std::vector <Point> adams_4
 
         for (size_t times = 0; times != correct_times; ++times)
         {
-            correct = answer.back() + 
+            correct = answer.back() +
                 ( 251./720.) * f_(correct) +
-                ( 646./720.) * f_(answer[i - 1]) + 
-                (-264./720.) * f_(answer[i - 2]) + 
+                ( 646./720.) * f_(answer[i - 1]) +
+                (-264./720.) * f_(answer[i - 2]) +
                 ( 106./720.) * f_(answer[i - 3]) +
                 ( -19./720.) * f_(answer[i - 4]);
 
@@ -140,7 +140,7 @@ std::vector <Point> adams_4
 
         answer.push_back(correct);
     }
-    
+
     return answer;
 }
 
