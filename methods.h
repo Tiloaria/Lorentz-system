@@ -145,7 +145,7 @@ std::vector <Point> adams_4
 }
 
 typedef
-std::vector<Point> (* method_type)
+std::vector<Point> (& method_type)
 (
     double,
     double,

@@ -11,12 +11,12 @@ struct apply_function
     {}
     
     template <size_t ... n>
-    typename std::result_of <F(T && ...)> :: type apply (F f, std::integer_sequence <size_t, n ...>)
+    typename std::result_of <F(T && ...)> :: type apply (F && f, std::integer_sequence <size_t, n ...>)
     {
         return f(std::forward <T &&> (std::get <n> (args)) ...);
     }
     
-    typename std::result_of <F(T && ...)> :: type operator () (F f)
+    typename std::result_of <F(T && ...)> :: type operator () (F && f)
     {
         return apply(f, std::make_index_sequence <sizeof ... (T)>());
     }
