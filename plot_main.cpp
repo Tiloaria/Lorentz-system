@@ -1,5 +1,7 @@
-#include "methods.h"
+#include <utility>
+#include <functional>
 #include "draw_plots.cpp"
+#include "methods.h"
 
 template <typename F, typename ... T>
 struct apply_function
@@ -9,12 +11,12 @@ struct apply_function
     {}
     
     template <size_t ... n>
-    typename std::result_of <F(T && ...)> :: type apply (F f, std::integer_sequence <size_t, n ...>)
+    typename std::result_of <F(T && ...)> :: type apply (F && f, std::integer_sequence <size_t, n ...>)
     {
         return f(std::forward <T &&> (std::get <n> (args)) ...);
     }
     
-    typename std::result_of <F(T && ...)> :: type operator () (F f)
+    typename std::result_of <F(T && ...)> :: type operator () (F && f)
     {
         return apply(f, std::make_index_sequence <sizeof ... (T)>());
     }
@@ -39,22 +41,19 @@ int main ()
 
     auto f_apply = apply_function <method_type, double, double, double, double, double, double, double, double, double>
     (
-            r, 
-            b,
-            delta, 
-            delta_t,      
-            x0,
-            y0,
-            z0,
-            t0,
-            max_t
+        r, 
+        b,
+        delta, 
+        delta_t,      
+        x0,
+        y0,
+        z0,
+        t0,
+        max_t
     );
 
     all_plots.add(f_apply(explicit_method_euler), "explicit\\_method\\_euler");
-
     all_plots.add(f_apply(implicit_method_euler), "implicit\\_method\\_euler");
-    
     all_plots.add(f_apply(runge_kutta), "runge\\_kutta");
-    
     all_plots.add(f_apply(adams_4), "adams");
 }

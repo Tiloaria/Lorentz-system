@@ -4,6 +4,7 @@
 #include "plots.cpp"
 #include "plots_3d.cpp"
 #include "data_stuctures.h"
+#include <functional>
 #include <algorithm>
 #include <vector>
 #include <string>
