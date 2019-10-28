@@ -52,7 +52,7 @@ std::vector<Point> runge_kutta
                 vec3 k1 = f(a.t + dt_div_2, a.xyz() + dt_div_2 * k0, delta, r, b);
                 vec3 k2 = f(a.t + dt_div_2, a.xyz() + dt_div_2 * k1, delta, r, b);
                 vec3 k3 = f(a.t + delta_t, delta_t * k2, delta, r, b);
-                vec3 k = (k0 + 2 * k1 + 2 * k2 + k3) / 6;
+                vec3 k = (k0 + 2 * k1 + 2 * k2 + k3) / 5;
                 a = Point(a.t + delta_t, a.xyz() + delta_t * k);
                 ps.push_back(a);
         }

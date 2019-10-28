@@ -5,13 +5,13 @@ int main ()
 {
     const long double delta = 10,
     b = 10.0 / 3,
-    r = 20,
+    r = 30,
     delta_t = 0.0001,
     x0 = 10,
     y0 = 12,
     z0 = r + 5,
     t0 = 0,
-    max_t = 20;
+    max_t = 50;
 
     draw all_plots;
     
