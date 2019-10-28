@@ -103,7 +103,7 @@ std::vector <Point> adams_4
 ) 
 {
     size_t correct_times = 2;
-    std::vector <Point> answer = runge_kutta(r, b, delta, delta_t, x0, y0, z0, t0, t0 + 5. * delta_t);
+    std::vector <Point> answer = implicit_method_euler(r, b, delta, delta_t, x0, y0, z0, t0, t0 + 5. * delta_t);
     auto f_ = [r, b, delta, delta_t] (Point value) -> Point 
     {
         return Point
@@ -143,5 +143,20 @@ std::vector <Point> adams_4
     
     return answer;
 }
+
+typedef
+std::vector<Point> (* method_type)
+(
+    double,
+    double,
+    double,
+    double,
+    double,
+    double,
+    double,
+    double,
+    double
+);
+
 
 #endif

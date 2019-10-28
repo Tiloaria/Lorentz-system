@@ -1,21 +1,6 @@
 #include "find_r.cpp"
 #include "methods.h"
 
-typedef
-std::vector<Point> (* method_type)
-(
-    double,
-    double,
-    double,
-    double,
-    double,
-    double,
-    double,
-    double,
-    double
-);
-
-
 int main (int argc, char ** argv)
 {
     //double r = 20.;
