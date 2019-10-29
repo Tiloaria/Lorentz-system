@@ -60,7 +60,7 @@ struct Point {
 };
 
 const long double delta = 10,
-b = 10.0 / 3,
+b = 8.0 / 3,
 r = 20,
 delta_t = 0.01,
 x0 = 0,
