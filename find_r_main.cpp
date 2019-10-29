@@ -4,14 +4,14 @@
 int main (int argc, char ** argv)
 {
     //double r = 20.;
-    double b = 10. / 3.;
+    double b = 8. / 3.;
     double delta = 10.;
-    double delta_t = 0.001;
+    double delta_t = 0.01;
     double x0 = 10.;
     double y0 = 12.;
     double z0 = 25.;
     double t0 = 0.;
-    double max_t = 2000.;
+    double max_t = 20000.;
 
     double left_r = 0.;
     double right_r = 100.;
@@ -51,6 +51,6 @@ int main (int argc, char ** argv)
     double r2_runge = f_bind(runge_kutta, R_2);
     std::cout << "r** (  runge kutta ) = " << r2_runge << "\n";
 
-    double r2_adams = f_bind(adams_4, R_2);
+    double r2_adams = f_bind(adams_4 <2>, R_2);
     std::cout << "r** (     adams    ) = " << r2_adams << "\n";
 }

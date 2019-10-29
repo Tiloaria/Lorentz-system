@@ -27,17 +27,17 @@ private:
 
 int main ()
 {
-    const long double delta = 10,
-    b = 10.0 / 3,
-    r = 30,
+    const long double delta = 10.,
+    b = 8.0 / 3.,
+    r = 30.,
     delta_t = 0.0001,
-    x0 = 10,
-    y0 = 12,
-    z0 = r + 5,
-    t0 = 0,
-    max_t = 50;
+    x0 = 10.,
+    y0 = 12.,
+    z0 = r + 5.,
+    t0 = 0.,
+    max_t = 50.;
 
-    draw all_plots;
+    draw all_plots({"x(t)", "y(t)", "z(t)", "x y z"}, {50, 60});
 
     auto f_apply = apply_function <method_type, double, double, double, double, double, double, double, double, double>
     (
@@ -55,5 +55,5 @@ int main ()
     all_plots.add(f_apply(explicit_method_euler), "explicit\\_method\\_euler");
     all_plots.add(f_apply(implicit_method_euler), "implicit\\_method\\_euler");
     all_plots.add(f_apply(runge_kutta), "runge\\_kutta");
-    all_plots.add(f_apply(adams_4), "adams");
+    all_plots.add(f_apply(adams_4 <2>), "adams");
 }

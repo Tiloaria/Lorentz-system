@@ -89,6 +89,7 @@ std::vector<Point> implicit_method_euler
     return ps;
 }
 
+template <size_t correct_times = 2>
 std::vector <Point> adams_4
 (
     double r = 20.,
@@ -102,7 +103,6 @@ std::vector <Point> adams_4
     double max_t = 2.
 )
 {
-    size_t correct_times = 2;
     std::vector <Point> answer = implicit_method_euler(r, b, delta, delta_t, x0, y0, z0, t0, t0 + 5. * delta_t);
     auto f_ = [r, b, delta, delta_t] (Point value) -> Point
     {
