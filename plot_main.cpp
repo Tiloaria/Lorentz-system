@@ -27,9 +27,15 @@ private:
 
 int main ()
 {
+<<<<<<< HEAD
     const long double delta = 10.,
     b = 8.0 / 3.,
     r = 30.,
+=======
+    const long double delta = 10,
+    b = 8.0 / 3,
+    r = 30,
+>>>>>>> c9c2babc328fc4aa38e49d002a38b46e1f316da3
     delta_t = 0.0001,
     x0 = 10.,
     y0 = 12.,
