@@ -4,7 +4,7 @@
 int main (int argc, char ** argv)
 {
     //double r = 20.;
-    double b = 10. / 3.;
+    double b = 8. / 3.;
     double delta = 10.;
     double delta_t = 0.001;
     double x0 = 10.;
