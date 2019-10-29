@@ -28,7 +28,7 @@ private:
 int main ()
 {
     const long double delta = 10,
-    b = 10.0 / 3,
+    b = 8.0 / 3,
     r = 30,
     delta_t = 0.0001,
     x0 = 10,
